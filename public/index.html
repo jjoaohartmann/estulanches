@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>EstuLanches – Cantina</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="topo">
+      <div class="marca">
+        <h1>EstuLanches</h1>
+        <p>Escolha, envie e retire quando estiver pronto.</p>
+      </div>
+      <a href="admin.html">Painel da cantina</a>
+    </div>
+  </header>
+
+  <main>
+    <section aria-labelledby="titulo-cardapio">
+      <h2 id="titulo-cardapio">Cardápio</h2>
+      <div id="cardapio">Carregando cardápio...</div>
+    </section>
+
+    <aside>
+      <section class="caixa comanda" id="pedido">
+        <h2>Seu pedido</h2>
+        <ul id="resumo"></ul>
+        <p class="total"><span>Total</span> <strong id="total">R$ 0,00</strong></p>
+        <label for="cliente">Seu nome</label>
+        <input id="cliente" maxlength="80" autocomplete="name">
+        <button id="enviar" type="button">Enviar pedido</button>
+        <p id="mensagem" role="status"></p>
+      </section>
+
+      <section class="caixa">
+        <h2>Acompanhar pedido</h2>
+        <label for="numero">Número do pedido</label>
+        <input id="numero" inputmode="numeric" maxlength="10">
+        <button id="consultar" type="button">Consultar pedido</button>
+        <p id="status-pedido" role="status"></p>
+      </section>
+    </aside>
+  </main>
+
+  <a class="barra-mobile" href="#pedido">
+    <span>Ver meu pedido</span>
+    <strong id="total-mini">R$ 0,00</strong>
+  </a>
+
+  <script src="app.js"></script>
+</body>
+</html>

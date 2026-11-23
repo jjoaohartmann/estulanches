@@ -1,0 +1,302 @@
+/* EstuLanches — visual de cantina: lista de preços com pontilhado, preço em "marca-texto" e comanda de pedido. */
+
+:root {
+  --papel: #f5f7f2;
+  --superficie: #ffffff;
+  --tinta: #1b2a41;
+  --tinta-suave: #4a5a70;
+  --verde: #0f7b5f;
+  --verde-escuro: #0a5c47;
+  --marca-texto: #ffd23f;
+  --tomate: #b3261e;
+  --linha: #cbd5cb;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--tinta);
+  background: var(--papel);
+  font-variant-numeric: tabular-nums;
+}
+
+h1, h2, h3 { line-height: 1.2; margin: 0; }
+h2 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.01em; }
+a { color: inherit; }
+
+/* ---------- Cabeçalho ---------- */
+header {
+  background: var(--verde);
+  color: #fff;
+  border-bottom: 4px solid var(--marca-texto);
+}
+.topo {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.marca h1 { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.03em; }
+.marca p { margin: 2px 0 0; font-size: .95rem; opacity: .92; }
+.topo a { font-weight: 600; text-underline-offset: 3px; }
+
+/* ---------- Estrutura da página ---------- */
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 20px 40px;
+}
+main.admin { grid-template-columns: minmax(0, 1fr); max-width: 980px; gap: 0; }
+aside { align-self: start; position: sticky; top: 16px; }
+
+/* ---------- Cardápio ---------- */
+#cardapio h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--verde-escuro);
+  margin: 28px 0 4px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--tinta);
+}
+.lista { list-style: none; margin: 0; padding: 0; }
+.item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 0;
+}
+.linha { flex: 1; min-width: 0; display: flex; align-items: flex-end; gap: 8px; }
+.nome { font-weight: 600; }
+.pontilhado { flex: 1; min-width: 12px; border-bottom: 2px dotted #9fb0a0; margin-bottom: .4em; }
+.preco {
+  font-weight: 800;
+  padding: 0 4px;
+  background: linear-gradient(transparent 52%, var(--marca-texto) 52%);
+}
+
+.controles { display: flex; align-items: center; gap: 4px; }
+.controles span { min-width: 28px; text-align: center; font-weight: 800; }
+.controles button {
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 2px solid var(--tinta);
+  border-radius: 50%;
+  background: var(--superficie);
+  color: var(--tinta);
+  font-size: 1.35rem;
+  line-height: 1;
+}
+.controles button:hover { background: var(--tinta); color: #fff; }
+
+/* ---------- Comanda e caixas ---------- */
+.caixa {
+  background: var(--superficie);
+  border: 2px solid var(--tinta);
+  border-radius: 6px;
+  padding: 18px;
+  margin-bottom: 20px;
+}
+.caixa h2 { font-size: 1.25rem; margin-bottom: 12px; }
+.comanda { border-top-width: 8px; border-top-color: var(--verde); }
+.comanda #resumo { margin: 0 0 12px; padding: 0; list-style: none; }
+.comanda #resumo li { padding: 7px 0; border-bottom: 1px dashed var(--linha); }
+.comanda #resumo:empty::before { content: "Nenhum item ainda. Toque em + no cardápio."; color: var(--tinta-suave); }
+.total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 0 0 14px;
+  padding-top: 12px;
+  border-top: 2px dashed var(--tinta);
+  font-size: 1.25rem;
+}
+.total strong { font-size: 1.5rem; font-weight: 800; }
+
+/* ---------- Formulários e botões ---------- */
+label { display: block; margin: 12px 0 4px; font-weight: 600; font-size: .95rem; }
+input, select {
+  width: 100%;
+  padding: 12px;
+  font: inherit;
+  color: var(--tinta);
+  border: 2px solid var(--linha);
+  border-radius: 8px;
+  background: #fff;
+}
+input:focus, select:focus { border-color: var(--tinta); }
+
+button { font: inherit; cursor: pointer; }
+.caixa > button, .caixa button#enviar, .caixa button#consultar, #entrar {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 14px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--verde);
+  color: #fff;
+  font-weight: 700;
+}
+.caixa > button:hover, #entrar:hover { background: var(--verde-escuro); }
+.caixa > button:active, .controles button:active, td button:active { transform: translateY(1px); }
+
+:focus-visible { outline: 3px solid var(--tinta); outline-offset: 2px; }
+
+/* mensagens de sucesso/erro (a classe é definida pelo JavaScript) */
+p[role="status"] { margin: 12px 0 0; }
+.ok, .erro { padding: 8px 10px; border-left: 4px solid; border-radius: 0 6px 6px 0; font-weight: 600; }
+.ok { color: #0b5d46; background: #e6f3ed; border-color: var(--verde); }
+.erro { color: #8e1e16; background: #fbeae8; border-color: var(--tomate); }
+
+/* ---------- Painel da cantina ---------- */
+.rolagem { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 560px; }
+th { text-align: left; padding: 8px; border-bottom: 2px solid var(--tinta); font-weight: 800; }
+td { padding: 12px 8px; border-bottom: 1px solid var(--linha); vertical-align: middle; }
+td.num { font-weight: 800; }
+td.vazio { text-align: center; color: var(--tinta-suave); padding: 28px 8px; }
+
+.status {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: .85rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.status-recebido   { background: #e3ecf8; color: #1d3f72; }
+.status-preparando { background: #fff1bf; color: #6b4e00; }
+.status-pronto     { background: #d6f0e4; color: #0a5c47; }
+.status-entregue   { background: #e6e8eb; color: #4a5a70; }
+.status-cancelado  { background: #f9dad6; color: #8e1e16; }
+
+td.acoes button {
+  min-height: 38px;
+  margin: 0 6px 4px 0;
+  padding: 4px 12px;
+  border: 2px solid var(--tinta);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--tinta);
+  font-size: .9rem;
+  font-weight: 700;
+}
+td.acoes button:hover { background: var(--tinta); color: #fff; }
+td.acoes button.perigo { border-color: var(--tomate); color: var(--tomate); }
+td.acoes button.perigo:hover { background: var(--tomate); color: #fff; }
+
+main.admin .caixa { max-width: none; }
+main.admin .caixa input, main.admin .caixa select { max-width: 420px; }
+main.admin #entrar { max-width: 420px; display: block; }
+
+
+/* ---------- Estoque no cardápio do aluno ---------- */
+.etiqueta {
+  align-self: center;
+  padding: 1px 9px;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.etiqueta.baixo { background: #fff1bf; color: #6b4e00; }
+.etiqueta.esgotado { background: #f9dad6; color: #8e1e16; }
+.item.esgotado .nome { color: var(--tinta-suave); }
+.item.esgotado .preco { background: none; color: var(--tinta-suave); text-decoration: line-through; }
+.controles button:disabled { opacity: .3; cursor: not-allowed; }
+.controles button:disabled:hover { background: var(--superficie); color: var(--tinta); }
+
+/* ---------- Painel: abas, alertas e estoque ---------- */
+[hidden] { display: none !important; }
+
+.abas { display: flex; gap: 8px; margin: 0 0 16px; border-bottom: 2px solid var(--tinta); }
+.abas button {
+  margin: 0;
+  padding: 10px 18px;
+  border: 2px solid var(--tinta);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  background: var(--superficie);
+  color: var(--tinta);
+  font-weight: 700;
+  position: relative;
+  top: 2px;
+}
+.abas button[aria-selected="true"] { background: var(--tinta); color: #fff; }
+.abas button:not([aria-selected="true"]):hover { background: #e9efe6; }
+.contagem {
+  display: inline-block;
+  min-width: 22px;
+  padding: 0 6px;
+  margin-left: 4px;
+  border-radius: 999px;
+  background: var(--tomate);
+  color: #fff;
+  font-size: .8rem;
+  text-align: center;
+}
+.alerta {
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border-left: 6px solid #c98a00;
+  border-radius: 0 6px 6px 0;
+  background: #fff1bf;
+  color: #4d3800;
+  font-weight: 700;
+}
+.discreto { color: var(--tinta-suave); font-size: .85rem; font-weight: 400; }
+td.num .discreto { margin-left: 2px; }
+
+.situacao-ok       { background: #d6f0e4; color: #0a5c47; }
+.situacao-baixo    { background: #fff1bf; color: #6b4e00; }
+.situacao-esgotado { background: #f9dad6; color: #8e1e16; }
+.mov-entrada       { background: #d6f0e4; color: #0a5c47; }
+.mov-ajuste        { background: #fff1bf; color: #6b4e00; }
+.mov-venda         { background: #e3ecf8; color: #1d3f72; }
+.mov-cancelamento  { background: #e6e8eb; color: #4a5a70; }
+
+#registrar { max-width: 420px; display: block; width: 100%; min-height: 48px; margin-top: 14px; border: 0; border-radius: 8px; background: var(--verde); color: #fff; font-weight: 700; }
+#registrar:hover { background: var(--verde-escuro); }
+
+/* ---------- Barra de pedido (só no celular) ---------- */
+.barra-mobile { display: none; }
+
+@media (max-width: 860px) {
+  main { grid-template-columns: minmax(0, 1fr); gap: 8px; padding-bottom: 96px; }
+  aside { position: static; }
+  .barra-mobile {
+    display: flex;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 10;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: var(--tinta);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .barra-mobile strong { font-size: 1.15rem; }
+}
+
+/* Celulares estreitos: nome em cima, preço embaixo (evita quebra de linha desajeitada) */
+@media (max-width: 440px) {
+  .linha { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .pontilhado { display: none; }
+}

@@ -1,0 +1,10 @@
+# Arquivos que NÃO entram na imagem (menor, mais rápida e mais segura).
+# Obs.: a pasta "tests" entra de propósito, para rodar os testes dentro do container.
+node_modules
+.env
+.git
+.gitignore
+docs
+*.md
+Dockerfile
+docker-compose.yml

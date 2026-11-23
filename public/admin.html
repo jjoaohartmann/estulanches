@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EstuLanches – Painel da cantina</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="topo">
+      <div class="marca">
+        <h1>Painel da cantina</h1>
+        <p>Pedidos, estoque e reposição em um só lugar.</p>
+      </div>
+      <a href="index.html">Voltar ao cardápio</a>
+    </div>
+  </header>
+
+  <main class="admin">
+    <section class="caixa">
+      <label for="chave">Chave de administrador</label>
+      <input id="chave" type="password" autocomplete="off">
+      <button id="entrar" type="button">Entrar</button>
+      <p id="aviso" role="status"></p>
+    </section>
+
+    <nav class="abas" role="tablist" aria-label="Seções do painel">
+      <button type="button" role="tab" id="botao-pedidos" aria-selected="true" aria-controls="aba-pedidos" data-aba="pedidos">Pedidos</button>
+      <button type="button" role="tab" id="botao-estoque" aria-selected="false" aria-controls="aba-estoque" data-aba="estoque">
+        Estoque <span id="contagem-alertas" class="contagem" hidden></span>
+      </button>
+    </nav>
+
+    <!-- ===== ABA PEDIDOS ===== -->
+    <section id="aba-pedidos" role="tabpanel" aria-labelledby="botao-pedidos">
+      <div class="caixa">
+        <h2>Pedidos recentes</h2>
+        <div class="rolagem">
+          <table>
+            <thead>
+              <tr><th>Nº</th><th>Cliente</th><th>Total</th><th>Status</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="pedidos">
+              <tr><td class="vazio" colspan="5">Entre com a chave para ver os pedidos.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ABA ESTOQUE ===== -->
+    <section id="aba-estoque" role="tabpanel" aria-labelledby="botao-estoque" hidden>
+      <div id="alerta-estoque" class="alerta" role="status" hidden></div>
+
+      <div class="caixa">
+        <h2>Posição de estoque</h2>
+        <div class="rolagem">
+          <table>
+            <thead>
+              <tr><th>Produto</th><th>Estoque</th><th>Situação</th><th>Cardápio</th></tr>
+            </thead>
+            <tbody id="estoque">
+              <tr><td class="vazio" colspan="4">Entre com a chave para ver o estoque.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="caixa">
+        <h2>Registrar movimentação</h2>
+        <form id="form-movimentacao">
+          <label for="mov-produto">Produto</label>
+          <select id="mov-produto" required></select>
+
+          <label for="mov-tipo">Tipo</label>
+          <select id="mov-tipo">
+            <option value="entrada">Reposição (soma ao estoque)</option>
+            <option value="ajuste">Ajuste de contagem (define o estoque exato)</option>
+          </select>
+
+          <label for="mov-quantidade" id="rotulo-quantidade">Quantidade a repor</label>
+          <input id="mov-quantidade" type="number" min="0" max="10000" step="1" inputmode="numeric" required>
+
+          <label for="mov-motivo" id="rotulo-motivo">Motivo (opcional na reposição)</label>
+          <input id="mov-motivo" maxlength="120">
+
+          <button id="registrar" type="submit">Registrar</button>
+          <p id="aviso-estoque" role="status"></p>
+        </form>
+      </div>
+
+      <div class="caixa">
+        <h2>Movimentações recentes</h2>
+        <div class="rolagem">
+          <table>
+            <thead>
+              <tr><th>Quando</th><th>Produto</th><th>Tipo</th><th>Qtd.</th><th>Saldo</th><th>Motivo</th></tr>
+            </thead>
+            <tbody id="movimentacoes">
+              <tr><td class="vazio" colspan="6">Nenhuma movimentação ainda.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>

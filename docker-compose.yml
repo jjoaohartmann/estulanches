@@ -1,0 +1,59 @@
+# ---------- Sobe o EstuLanches completo: aplicação + banco de dados ----------
+# Uso:  docker compose up -d --build
+
+services:
+
+  # ===== Banco de dados =====
+  db:
+    image: postgres:16-alpine
+    container_name: estulanches-db
+    restart: unless-stopped
+    environment:
+      # Os valores vêm do arquivo .env (o ":?" faz o compose falhar se faltar algum)
+      POSTGRES_USER: ${DB_USER:?Defina DB_USER no .env}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Defina DB_PASSWORD no .env}
+      POSTGRES_DB: ${DB_NAME:?Defina DB_NAME no .env}
+    volumes:
+      # Volume nomeado: os dados NÃO se perdem quando o container reinicia
+      - db_data:/var/lib/postgresql/data
+      # Na primeira execução, cria as tabelas e o cardápio inicial
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      # Só fica "healthy" quando o Postgres está realmente aceitando conexões
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - rede_interna
+    # ATENÇÃO (segurança): não há "ports" aqui. O banco NÃO é acessível de fora,
+    # só a aplicação enxerga ele pela rede interna do Docker.
+
+  # ===== Aplicação (Node.js + Express) =====
+  app:
+    build: .
+    image: estulanches:1.0.0
+    container_name: estulanches-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy   # a app só sobe depois que o banco estiver pronto
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_HOST: db                    # "db" é o nome do serviço acima (o Docker resolve o endereço)
+      DB_PORT: 5432
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      ADMIN_API_KEY: ${ADMIN_API_KEY:?Defina ADMIN_API_KEY no .env}
+    ports:
+      - "3000:3000"                  # único serviço exposto: http://localhost:3000
+    networks:
+      - rede_interna
+
+volumes:
+  db_data:
+
+networks:
+  rede_interna:
